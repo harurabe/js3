@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang='ja'>
+<head>
+	<meta charset='utf-8'>
+	<title>課題 3-1</title>
+    <style>
+        table th, h3 {
+          font-size: 18px;
+        }
+      </style>
+</head>
+    <body>
+        <h2>ToDoリスト</h2>
+
+        <div>
+            <input name="status" type='radio' checked> すべて
+            <input name="status"type='radio'> 作業中
+            <input name="status"type='radio'> 完了
+        </div>
+        <br>
+
+        <table id ="taskTable"> 
+            <tr>
+                <th>ID</th>
+                <th>コメント</th>
+                <th>状態</th>
+                <th></th>
+            </tr>
+        </table>
+        
+        <h3>新規タスクの追加</h3>
+        <input type='text' id='addform'> <button id='add'>追加</button>
+
+        <script>
+            // ------------------------ ここから初期変数等の定義 ------------------------------------
+	        //初期タスクリスト
+            const myTasks = [];
+            let idNum = 0
+        	
+            // ------------------------ ここからイベントリスナー------------------------------------
+	        // 追加ボタンのイベントリスナー
+            const addButton = document.getElementById('add');
+            addButton.addEventListener('click', addTask);
+           
+        	// ------------------------ ここから関数定義 ------------------------------------
+            // 新規タスクの”追加”ボタンを押したときの関数
+            function addTask(){
+                const commentValue = document.getElementById('addform').value;
+                myTasks.push({id:idNum,comment:commentValue,status:'作業中'});
+
+                insertTable(myTasks[idNum]);
+                idNum += 1;
+            } 
+
+            // タスクをTable末尾に挿入する関数
+            function insertTable (task) {
+                const table = document.getElementById('taskTable');
+                const row = taskTable.insertRow(-1);
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+                const cell4 = row.insertCell(3);
+
+                cell1.innerHTML = task.id;
+                cell2.innerHTML = task.comment;
+                cell3.innerHTML = '<button>' + task.status + '</button>';
+                cell4.innerHTML = '<button>削除</button>';
+            }
+        </script>
+    </body>
+    </html>
