@@ -55,17 +55,23 @@
 
             // タスクをTable末尾に挿入する関数
             function insertTable (task) {
-                const table = document.getElementById('taskTable');
+                const taskTable = document.getElementById('taskTable');
                 const row = taskTable.insertRow(-1);
                 const cell1 = row.insertCell(0);
                 const cell2 = row.insertCell(1);
                 const cell3 = row.insertCell(2);
                 const cell4 = row.insertCell(3);
 
+                const deleteBtn = document.createElement("button");
+                deleteBtn.innerHTML = "削除";
+
+                const statusBtn = document.createElement("button");
+                statusBtn.innerHTML = "作業中";
+
                 cell1.innerHTML = task.id;
                 cell2.innerHTML = task.comment;
-                cell3.innerHTML = '<button>' + task.status + '</button>';
-                cell4.innerHTML = '<button>削除</button>';
+                cell3.appendChild(statusBtn);
+                cell4.appendChild(deleteBtn);
             }
         </script>
     </body>
