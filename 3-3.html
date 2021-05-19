@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang='ja'>
+<head>
+	<meta charset='utf-8'>
+	<title>課題 3-3</title>
+    <style>
+        table th, h3 {
+          font-size: 18px;
+        }
+      </style>
+</head>
+    <body>
+        <h2>ToDoリスト</h2>
+
+        <div>
+            <input name="status" type='radio' checked> すべて
+            <input name="status"type='radio'> 作業中
+            <input name="status"type='radio'> 完了
+        </div>
+        <br>
+
+        <table id ="taskTable"> 
+            <tr>
+                <th>ID</th>
+                <th>コメント</th>
+                <th>状態</th>
+                <th></th>
+            </tr>
+        </table>
+        
+        <h3>新規タスクの追加</h3>
+        <input type='text' id='addform'> <button id='add'>追加</button>
+
+        <script>
+            // ------------------------ ここから初期変数やボタン等の定義 ------------------------------------
+	        //タスクリスト
+            const myTasks = [];
+
+            const addButton = document.getElementById('add');
+            addButton.addEventListener('click', addTask);
+           
+        	// ------------------------ ここから関数定義 ------------------------------------
+            // 新規タスクの追加ボタンを押したときの関数
+            function addTask(){
+                const commentValue = document.getElementById('addform').value;
+                myTasks.push({comment:commentValue,status:'作業中'});
+                let taskid = myTasks.length -1;
+
+                insertTable(myTasks[taskid], taskid);
+            } 
+
+            // タスクをTable末尾に挿入し表示する関数
+            function insertTable (task, taskid) {
+                const taskTable = document.getElementById('taskTable');
+                const row = taskTable.insertRow(-1);
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+                const cell4 = row.insertCell(3);
+
+                // 状態
+                const statusBtn = document.createElement("button");
+                statusBtn.innerHTML = task.status;
+                statusBtn.className = 'stBtn';
+                statusBtn.id = taskid;
+                statusBtn.addEventListener('click', switchStatus);
+
+                const deleteBtn = document.createElement("button");
+                deleteBtn.innerHTML = '削除';
+                deleteBtn.className = 'delBtn';
+                deleteBtn.id = taskid;
+                deleteBtn.addEventListener('click', deleteTask);
+
+                cell1.innerHTML = taskid;
+                cell2.innerHTML = task.comment;
+                cell3.appendChild(statusBtn);
+                cell4.appendChild(deleteBtn);
+            }
+            
+            // 状態ボタンを押したときの関数
+            function switchStatus(e){
+                let id = parseInt(e.target.id);
+
+                if(myTasks[id].status === '作業中'){
+                    myTasks[id].status = '完了';
+                } 
+                else if (myTasks[id].status === '完了'){
+                    myTasks[id].status = "作業中"; 
+                }
+                
+                e.target.innerHTML = myTasks[id].status;
+            }
+
+            // 削除ボタンを押したときの関数
+            function deleteTask(e){
+                let id = parseInt(e.target.id);
+
+                // myTasksからid番目のタスクを削除
+                myTasks.splice(id, 1);
+
+                // HTMLのtaskTableから該当行を削除
+                const taskTable = document.getElementById('taskTable');
+                taskTable.deleteRow(id+1);
+
+                const deleteBtn = document.getElementsByClassName('delBtn');
+                const statusBtn = document.getElementsByClassName('stBtn');
+ 
+                // id列以降のdelBtnのidを更新
+                // id列以降のHTML表示を更新
+                rowCount = taskTable.rows.length;
+                for (let i = id; i < rowCount-1; i++) {
+                    deleteBtn[i].id = i;
+                    statusBtn[i].id = i;
+                    taskTable.rows[i+1].cells[0].innerHTML = i;
+                    // taskTable.rows[i+1].cells[3].id = i;
+                }
+            }
+
+            
+        </script>
+    </body>
+    </html>
