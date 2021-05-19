@@ -29,7 +29,7 @@
         </table>
         
         <h3>新規タスクの追加</h3>
-        <input type='text' id='addform'> <button id='add'>追加</button>
+        <input type='text' id='comment'> <button id='add'>追加</button>
 
         <script>
             // ------------------------ ここから初期変数やボタン等の定義 ------------------------------------
@@ -42,10 +42,11 @@
         	// ------------------------ ここから関数定義 ------------------------------------
             // 新規タスクの追加ボタンを押したときの関数
             function addTask(){
-                const commentValue = document.getElementById('addform').value;
-                myTasks.push({comment:commentValue,status:'作業中'});
+                let commentField = document.getElementById('comment');
+                myTasks.push({comment:commentField.value,status:'作業中'});
+                commentField.value ='';
+  
                 let taskid = myTasks.length -1;
-
                 insertTable(myTasks[taskid], taskid);
             } 
 
