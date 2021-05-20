@@ -2,7 +2,7 @@
 <html lang='ja'>
 <head>
 	<meta charset='utf-8'>
-	<title>課題 3-3</title>
+	<title>課題 3-4</title>
     <style>
         table th, h3 {
           font-size: 18px;
@@ -13,13 +13,13 @@
         <h2>ToDoリスト</h2>
 
         <div>
-            <input name="status" type='radio' checked> すべて
-            <input name="status"type='radio'> 作業中
-            <input name="status"type='radio'> 完了
+            <input name='status' type='radio' id='all' checked> すべて
+            <input name='status' type='radio' id='wip'> 作業中
+            <input name='status' type='radio' id="done"> 完了
         </div>
         <br>
 
-        <table id ="taskTable"> 
+        <table id ='taskTable'> 
             <tr>
                 <th>ID</th>
                 <th>コメント</th>
@@ -38,6 +38,15 @@
 
             const addButton = document.getElementById('add');
             addButton.addEventListener('click', addTask);
+
+            const radioAll = document.getElementById('all');
+            radioAll.addEventListener('click', filter);
+
+            const radioWip = document.getElementById('wip');
+            radioWip.addEventListener('click', filter);
+
+            const radioDone = document.getElementById('done');
+            radioDone.addEventListener('click', filter);
            
         	// ------------------------ ここから関数定義 ------------------------------------
             // 新規タスクの追加ボタンを押したときの関数
@@ -48,6 +57,7 @@
   
                 let taskid = myTasks.length -1;
                 insertTable(myTasks[taskid], taskid);
+                filter();
             } 
 
             // タスクをTable末尾に挿入し表示する関数
@@ -90,6 +100,7 @@
                 }
                 
                 e.target.innerHTML = myTasks[id].status;
+                filter();
             }
 
             // 削除ボタンを押したときの関数
@@ -117,7 +128,37 @@
                 }
             }
 
-            
+            function filter(){
+                const taskTable = document.getElementById('taskTable');
+                const trs = taskTable.getElementsByTagName('tr');
+
+                if(document.getElementById('all').checked) {
+                    myTasks.forEach ((value, index) => {
+                            trs[index+1].style.display ='';
+		            });
+                }
+                else if (document.getElementById('wip').checked) {
+                    myTasks.forEach ((value, index) => {
+                            if (value.status === '作業中') {
+                                trs[index+1].style.display ='';
+                            }
+                            else {
+                                trs[index+1].style.display ='none';          
+                            }
+                    });
+                }
+                else if(document.getElementById('done').checked){
+                    myTasks.forEach ((value, index) => {
+                            if (value.status === '完了') {
+                                trs[index+1].style.display ='';
+                            }
+                            else {
+                                trs[index+1].style.display ='none';          
+                            }
+                    });
+                }
+
+            }
         </script>
     </body>
     </html>
